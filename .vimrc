@@ -1,41 +1,61 @@
 call plug#begin('~/.vim/plugged')
+
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'mhartington/oceanic-next'
-Plug 'https://github.com/morhetz/gruvbox.git'
-Plug 'https://github.com/posva/vim-vue.git'
 Plug 'dense-analysis/ale'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'https://github.com/pangloss/vim-javascript.git'
 Plug 'sheerun/vim-polyglot'
 Plug 'dyng/ctrlsf.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat.git'
+Plug 'tpope/vim-commentary.git'
+Plug 'tpope/vim-surround.git'
 Plug 'ryanoasis/vim-devicons'
 Plug 'https://github.com/joshdick/onedark.vim.git'
-Plug 'ayu-theme/ayu-vim'
 Plug 'rhysd/git-messenger.vim'
 Plug 'https://github.com/airblade/vim-gitgutter.git'
-Plug 'https://github.com/lifepillar/vim-gruvbox8.git'
-Plug 'https://github.com/dracula/vim.git'
 Plug 'https://github.com/majutsushi/tagbar.git'
+Plug 'luochen1990/rainbow'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'janko/vim-test'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'https://github.com/chrisbra/Colorizer.git'
+
+" writing
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
-Plug 'https://github.com/kien/rainbow_parentheses.vim.git'
-Plug 'https://github.com/tpope/vim-surround.git'
-Plug 'https://github.com/flazz/vim-colorschemes.git'
-call plug#end()
 
+" javascript/web
+Plug 'https://github.com/posva/vim-vue.git'
+Plug 'https://github.com/pangloss/vim-javascript.git'
+
+" themes
+Plug 'mhartington/oceanic-next'
+Plug 'https://github.com/morhetz/gruvbox.git'
+Plug 'https://github.com/lifepillar/vim-gruvbox8.git'
+Plug 'https://github.com/ajh17/Spacegray.vim.git'
+Plug 'https://github.com/arcticicestudio/nord-vim.git'
+Plug 'https://github.com/sainnhe/sonokai.git'
+Plug 'https://github.com/jnurmine/Zenburn.git'
+Plug 'https://github.com/chriskempson/tomorrow-theme.git'
+Plug 'https://github.com/dracula/vim.git'
+Plug 'ayu-theme/ayu-vim'
+Plug 'https://github.com/kristijanhusak/vim-hybrid-material.git'
+Plug 'https://github.com/nanotech/jellybeans.vim.git'
+Plug 'Brettm12345/moonlight.vim'
+
+call plug#end()
 
 let mapleader = ","
 
 set backspace=indent,eol,start
 set background=dark
-au BufRead,BufNewFile *.py set expandtab
-au BufRead,BufNewFile *.c set noexpandtab
-au BufRead,BufNewFile *.h set noexpandtab
-au BufRead,BufNewFile Makefile* set noexpandtab
+set termguicolors
 
 " --------------------------------------------------------------------------------
 " configure editor with tabs and nice stuff...
@@ -53,33 +73,28 @@ let g:tex_flavor = 'latex'
 " --------------------------------------------------------------------------------
 " Mappings
 " --------------------------------------------------------------------------------
-" Mapping for going to next Ale issue
-nmap <silent> <leader>aj :ALENext<cr>
-nmap <silent> <leader>ak :ALEPrevious<cr>
-
-" pres // to stop highlighting results
+imap <c-e> <c-o>$
+imap <c-a> <c-o>^
 nmap <silent> // :nohlsearch<CR>
-
-" Git/Fugitive
+inoremap jj <Esc>
+map <leader>aj :ALENext<cr>
+map <leader>ak :ALEPrevious<cr>
+map <Leader>e :ALEFix eslint<CR>
 map <leader>gw :Gwrite<CR>
 map <leader>gc :Gcommit -m ""<LEFT>
 map <leader>gs :Gstatus<CR>
 map <leader>gb :Gblame<CR>
 map <leader>gd :Gdiffsplit<CR>
-
-vmap <leader>b :<C-U>!git blame <C-R>=expand("%:p") <CR> \| sed -n <C-R>=line("'<") <CR>,<C-R>=line("'>") <CR>p <CR>
-
-" open nerdtree with ctrl+o
-map <C-o> :NERDTreeToggle %<CR>
-
-" open nerdtree with ctrl+o
-command GGF GitGutterFold
-
-" FZF but easier
-nmap <silent> <leader>// :FZF<CR>
-
-" enable/disable spellcheck
+map <Leader>h <<
+map <Leader>j ddp
+map <Leader>k ddkP
+map <Leader>l >>
+map <leader>n :NERDTreeToggle <CR>
+map <leader>r :%s///g<LEFT><LEFT><LEFT>
 map <leader>ss :setlocal spell!<CR>
+map <leader>t :TestFile<CR>
+map <leader>// :FZF<CR>
+map <leader>/, :CtrlSF<SPACE>
 
 " open vimrc/init.vim
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -87,11 +102,25 @@ nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 " Jump to matching pairs easily, with Tab
 nnoremap <Tab> %
 
-" remove highlighted content without putting it in clipboard register
+" increment numbers
+noremap + <c-a>
+noremap - <c-x>
 
+map <Leader>cs :colorscheme <SPACE>
+
+" jump to
+" nnoremap <silent> <Space><Space> /++/<CR> ciw
+nnoremap <silent> <Space><Space> /++/<CR>
+
+" fat finger saving or quiting
 command W w " make :W behave like :w
 command Q q " make :Q behave like :q
 
+map Q <Nop>
+
+" Emacs-like beginning and end of line.
+
+command GGF GitGutterFold
 " --------------------------------------------------------------------------------
 " Autocmds
 " --------------------------------------------------------------------------------
@@ -118,7 +147,7 @@ set showmatch " highlight matching brace/backet when cursor over
 set scrolloff=5 " keep cursor away from top/bottom
 set ignorecase " ignore case if search pattern is all lowercase
 set smartcase " don't ignore case if start with capital
-set paste " don't auto indent pasted code
+" set paste " don't auto indent pasted code
 set guifont=Inconsolata\ Nerd\ Font:h14 " font-name:pxSize
 set clipboard=unnamed " use system clipboard for copy/paste
 set encoding=UTF-8
@@ -128,7 +157,14 @@ set gdefault " assume the /g flag on :s substitutions to replace all matches in 
 " set termwinsize=20x0 " make term buffer size 20 rows tall
 syntax enable " enable syntax highlighting
 filetype plugin indent on " turns on plugin, indent, detection
+set t_Co=256
 colorscheme gruvbox " colorscheme
+
+" no swap files
+set noswapfile
+set noundofile
+set nobackup
+set nowb
 
 " --------------------------------------------------------------------------------
 " Movement
@@ -145,19 +181,15 @@ tnoremap <C-j> <C-w>j
 tnoremap <C-k> <C-w>k
 tnoremap <C-l> <C-w>l
 
-" Emacs-like beginning and end of line.
-" imap <c-e> <c-o>$
-" imap <c-a> <c-o>^
-
 " makes spacebar behave like <C-d>
 " nnoremap <Space> <C-d>zz
+
 " makes shift+spacebar behave like <C-u>
 " nnoremap <S-Space> <C-u>zz
-" no more skipping lines due to wrapping
-" disabled because it messes up relative number
+
+" no more skipping lines due to wrapping (doesn't work with relative number)
 " nmap k gk
 " nmap j gj
-
 
 " --------------------------------------------------------------------------------
 " Tagbar config
@@ -169,8 +201,6 @@ let g:tagbar_indent = 2
 let g:tagbar_iconchars = ['+', '-']
 let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
 
-" open TagBar with ctrl+x
-map <C-x> :TagbarToggle<CR>
 
 set tags=tags " I _think_ this is for tagbar?
 
@@ -199,6 +229,7 @@ let NERDTreeMapActivateNode='<space>'
 let NERDTreeMinimalUI=1
 let NERDTreeDirArrowExpandable = "\u00a0" " make arrows invisible
 let NERDTreeNodeDelimiter = "\u263a" " smiley face
+let NERDTreeIgnore = ['.git$', '^node_modules']
 
 " --------------------------------------------------------------------------------
 " Limelight config
@@ -206,6 +237,12 @@ let NERDTreeNodeDelimiter = "\u263a" " smiley face
 " Color name (:help cterm-colors) or ANSI code
 let g:limelight_conceal_ctermfg = 240
 
+" --------------------------------------------------------------------------------
+"  Indent Guides config
+" --------------------------------------------------------------------------------
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
 
 " --------------------------------------------------------------------------------
 " FZF floating window for nvim
@@ -220,8 +257,8 @@ function! FloatingFZF()
   let buf = nvim_create_buf(v:false, v:true)
   call setbufvar(buf, '&signcolumn', 'no')
 
-  let height = float2nr(10)
-  let width = float2nr(80)
+  let height = float2nr(20) " 10
+  let width = float2nr(80) " 80
   let horizontal = float2nr((&columns - width) / 2)
   let vertical = 1
 
@@ -238,23 +275,71 @@ function! FloatingFZF()
 endfunction
 
 " --------------------------------------------------------------------------------
+" Ultisnips
+" --------------------------------------------------------------------------------
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
+
+" --------------------------------------------------------------------------------
+" ctrlsf
+" --------------------------------------------------------------------------------
+let g:ctrlsf_auto_focus = {
+    \ 'at': 'start',
+    \ }
+
+let g:ctrlsf_mapping = {
+    \ "vsplit": "<C-v>",
+    \ }
+
+" --------------------------------------------------------------------------------
+" vim-test config
+" --------------------------------------------------------------------------------
+" these "Ctrl mappings" work well when Caps Lock is mapped to Ctrl
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+nmap <silent> t<C-g> :TestVisit<CR>
+
+" --------------------------------------------------------------------------------
+" rainbow config
+" --------------------------------------------------------------------------------
+" enable rainbow parens
+let g:rainbow_active = 1
+
+" --------------------------------------------------------------------------------
 " Misc.
 " --------------------------------------------------------------------------------
-
-
 "set wildmode=longest,list,full
 set wildmode=list:longest,full
 " Not sure why the below is recommended, should look into later
 " set wildmenu
 " set wildmode=list:longest,full
 
+" no one should have to resize without a mouse
+if has('mouse')
+  set mouse=a
+endif
 
 " set Vim-specific sequences for RGB colors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-set t_Co=256
 
+if has('nvim')
+  augroup vimrc_term
+    autocmd!
+    autocmd WinEnter term://* nohlsearch
+    autocmd WinEnter term://* startinsert
 
+    autocmd TermOpen * tnoremap <buffer> <C-h> <C-\><C-n><C-w>h
+    autocmd TermOpen * tnoremap <buffer> <C-j> <C-\><C-n><C-w>j
+    autocmd TermOpen * tnoremap <buffer> <C-k> <C-\><C-n><C-w>k
+    autocmd TermOpen * tnoremap <buffer> <C-l> <C-\><C-n><C-w>l
+    autocmd TermOpen * tnoremap <buffer> <Esc> <C-\><C-n>
+  augroup END
+endif
 
 
 "Smooth scroll on ctrl+d and ctrl+u
@@ -270,7 +355,7 @@ set t_Co=256
 " endfor
 
 " bring the cursor in the middle of screen
-execute "normal M"
+" execute "normal M"
 
 " same as above but apply to super star as well
 :nnoremap * /\<<C-R>=expand('<cword>')<CR>\><CR>
@@ -284,11 +369,7 @@ autocmd WinEnter * set cul
 autocmd WinLeave * set nocul
 augroup END
 
-" no swap files
-set noswapfile
-set noundofile
-set nobackup
-set nowb
-
+" spell check and automatically wrap commit messages.
+autocmd Filetype gitcommit setlocal spell textwidth=72
 
 set rtp+=/usr/local/opt/fzf
