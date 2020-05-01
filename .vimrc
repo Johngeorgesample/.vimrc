@@ -9,9 +9,9 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'sheerun/vim-polyglot'
 Plug 'dyng/ctrlsf.vim'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat.git'
-Plug 'tpope/vim-commentary.git'
-Plug 'tpope/vim-surround.git'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
 Plug 'ryanoasis/vim-devicons'
 Plug 'https://github.com/joshdick/onedark.vim.git'
 Plug 'rhysd/git-messenger.vim'
@@ -25,6 +25,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'janko/vim-test'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'https://github.com/chrisbra/Colorizer.git'
+Plug 'vimwiki/vimwiki'
 
 " writing
 Plug 'junegunn/goyo.vim'
@@ -79,7 +80,10 @@ nmap <silent> // :nohlsearch<CR>
 inoremap jj <Esc>
 map <leader>aj :ALENext<cr>
 map <leader>ak :ALEPrevious<cr>
-map <Leader>e :ALEFix eslint<CR>
+vmap <Leader>as :sort<cr>
+nmap <Leader>as :sort<cr>
+map <silent><Leader>e :ALEFix eslint<CR>
+map <leader>es :UltiSnipsEdit<cr>
 map <leader>gw :Gwrite<CR>
 map <leader>gc :Gcommit -m ""<LEFT>
 map <leader>gs :Gstatus<CR>
@@ -92,9 +96,13 @@ map <Leader>l >>
 map <leader>n :NERDTreeToggle <CR>
 map <leader>r :%s///g<LEFT><LEFT><LEFT>
 map <leader>ss :setlocal spell!<CR>
+map <Leader>sv :so $MYVIMRC<cr>
 map <leader>t :TestFile<CR>
 map <leader>// :FZF<CR>
 map <leader>/, :CtrlSF<SPACE>
+
+nnoremap <leader>v <C-w>v
+nnoremap <leader>h <C-w>s
 
 " open vimrc/init.vim
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -158,7 +166,8 @@ set gdefault " assume the /g flag on :s substitutions to replace all matches in 
 syntax enable " enable syntax highlighting
 filetype plugin indent on " turns on plugin, indent, detection
 set t_Co=256
-colorscheme gruvbox " colorscheme
+colorscheme sonokai " colorscheme
+" colorscheme gruvbox " colorscheme
 
 " no swap files
 set noswapfile
@@ -208,7 +217,7 @@ set tags=tags " I _think_ this is for tagbar?
 " Statusbar
 " --------------------------------------------------------------------------------
 let g:airline_powerline_fonts = 1
-let g:airline_theme= 'gruvbox'
+" let g:airline_theme= 'gruvbox'
 set laststatus=2 "always display statusbar
 
 " --------------------------------------------------------------------------------
@@ -243,6 +252,13 @@ let g:limelight_conceal_ctermfg = 240
 let g:indent_guides_auto_colors = 0
 autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+
+
+" --------------------------------------------------------------------------------
+" indent-guide config
+" --------------------------------------------------------------------------------
+hi IndentGuidesOdd  ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
 
 " --------------------------------------------------------------------------------
 " FZF floating window for nvim
@@ -371,5 +387,11 @@ augroup END
 
 " spell check and automatically wrap commit messages.
 autocmd Filetype gitcommit setlocal spell textwidth=72
+
+
+" --------------------------------------------------------------------------------
+" Format one-liners
+" --------------------------------------------------------------------------------
+
 
 set rtp+=/usr/local/opt/fzf
